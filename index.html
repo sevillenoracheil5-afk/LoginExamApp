@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Login System</title>
+ <style>
+ body {
+   font-family: Arial, sans-serif;
+   background: linear-gradient(to right, #ede7f6, #bbdefb); /* light violet to light blue gradient */
+   text-align: center;
+   margin-top: 40px;
+ }
+
+ .login-box {
+   background: rgba(212, 70, 200, 0.2); /* soft violet overlay */
+   padding: 30px;
+   width: 90%;
+   max-width: 400px;
+   margin: auto;
+   margin-top: 10vh; /* centers vertically relative to screen height */
+   border-radius: 15px;
+   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4); /* black shadow */
+   border: 2px solid #3f51b5; /* blue border */
+   transition: transform 0.3s ease;
+ }
+
+ .login-box:hover {
+   transform: scale(1.02); /* subtle hover effect on box */
+ }
+
+ input {
+   width: 90%;
+   padding: 12px;
+   margin: 12px 0;
+   border: 1px solid #9fa8da; /* light violet border */
+   border-radius: 6px;
+   background-color: #f5f5f5; /* soft gray background */
+   font-size: 14px;
+   transition: border-color 0.3s ease;
+ }
+
+ input:focus {
+   border-color: #3f51b5; /* blue highlight on focus */
+   outline: none;
+ }
+
+ button {
+   padding: 12px;
+   width: 95%;
+   background-color: #3f51b5; /* blue button */
+   color: white;
+   border: none;
+   cursor: pointer;
+   border-radius: 6px;
+   font-weight: bold;
+   font-size: 15px;
+   transition: 0.3s ease;
+ }
+
+ button:hover {
+   background-color: #283593; /* darker blue on hover */
+   transform: scale(1.05); /* subtle hover zoom */
+ }
+
+ h1, h2 {
+   font-size: clamp(18px, 4vw, 26px); /* responsive font size */
+ }
+
+ h1 {
+   color: #000000; /* black title */
+   margin-bottom: 25px;
+   text-shadow: 1px 1px 2px #9fa8da; /* subtle violet shadow */
+ }
+
+ h2 {
+   color: #100c1a; /* dark violet accent for subtitle */
+   margin-bottom: 20px;
+ }
+
+ #message {
+   margin-top: 15px;
+   font-weight: bold;
+   font-size: 16px; /* slightly larger for emphasis */
+   transition: opacity 0.3s ease;
+ }
+ </style>
+</head>
+<body>
+<h1>Student Login Portal</h1>
+
+<div class="login-box">
+ <h2>Login</h2>
+ <input type="text" id="username" placeholder="Enter Username">
+ <input type="password" id="password" placeholder="Enter Password">
+ <button onclick="login()">Login</button>
+ <p id="message"></p>
+</div>
+
+<script>
+// Define multiple users
+var users = [
+  {username: "racheil", password: "2004"},   // Task 1 credentials
+  {username: "student1", password: "1111"},  // example user
+  {username: "student2", password: "2222"}   // example user
+];
+
+// Track login attempts
+var attempts = 0;
+var maxAttempts = 3;
+
+function login() {
+  var user = document.getElementById("username").value;
+  var pass = document.getElementById("password").value;
+
+  // If account already locked
+  if (attempts >= maxAttempts) {
+    document.getElementById("message").innerHTML = "❌ Account Locked!";
+    document.getElementById("message").style.color = "red";
+    return;
+  }
+
+  // Check if entered credentials match any user in the array
+  var found = users.find(u => u.username === user && u.password === pass);
+
+  if (found) {
+    document.getElementById("message").innerHTML = "✅ Welcome, " + user + "!";
+    document.getElementById("message").style.color = "green"; // success stays green
+    document.getElementById("message").style.fontSize = "18px"; // bigger welcome
+    attempts = 0; // reset attempts on success
+  } else {
+    attempts++;
+    if (attempts >= maxAttempts) {
+      document.getElementById("message").innerHTML = "❌ Account Locked!";
+      document.getElementById("message").style.color = "red";
+    } else {
+      document.getElementById("message").innerHTML = "⚠️ Invalid Username or Password! Attempts left: " + (maxAttempts - attempts);
+      document.getElementById("message").style.color = "black"; // error stays black
+    }
+  }
+}
+</script>
+</body>
+</html>
