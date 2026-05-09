@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+  <title>Student Login Portal</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root{
+      --bg1:#f3e9dc;
+      --bg2:#e8f0d8;
+      --bg3:#d8e8e0;
+      --panel:rgba(255,255,255,.28);
+      --line:rgba(255,255,255,.52);
+      --text:#36453b;
+      --muted:#6f7f72;
+      --primary:#8e9b6a;
+      --primary2:#b7a77a;
+      --accent:#d7c3a7;
+      --shadow:0 18px 50px rgba(87,101,76,.16);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100svh;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255,255,255,.7), transparent 18%),
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,.45), transparent 16%),
+        linear-gradient(160deg,var(--bg1) 0%, var(--bg2) 52%, var(--bg3) 100%);
+      display:flex;align-items:center;justify-content:center;
+      padding:18px;
+      color:var(--text);
+    }
+    .sky{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .cloud,.leaf{
+      position:absolute;
+      opacity:.9;
+      animation: drift linear infinite;
+    }
+    .cloud{
+      background:rgba(255,255,255,.35);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:999px;
+      box-shadow:0 10px 30px rgba(107,122,99,.08);
+    }
+    .cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border:inherit;border-radius:50%}
+    .cloud:before{width:55%;height:120%;left:12%;top:-45%}
+    .cloud:after{width:42%;height:90%;right:10%;top:-30%}
+    .leaf{
+      width:14px;height:22px;border-radius:100% 0 100% 0;
+      background:linear-gradient(135deg,#a9b98a,#7f9a72);
+      box-shadow:0 6px 16px rgba(74,93,67,.10);
+      transform:rotate(25deg);
+      filter:blur(.1px);
+    }
+    .c1{width:120px;height:42px;top:8%;left:-140px;animation-duration:42s}
+    .c2{width:160px;height:52px;top:18%;left:-180px;animation-duration:52s;animation-delay:-10s;opacity:.62}
+    .c3{width:90px;height:34px;bottom:16%;left:-120px;animation-duration:36s;animation-delay:-18s;opacity:.5}
+    .c4{width:140px;height:46px;bottom:10%;left:-160px;animation-duration:58s;animation-delay:-24s;opacity:.58}
+    .l1{top:14%;left:-30px;animation-duration:28s;animation-delay:-6s}
+    .l2{top:65%;left:-40px;animation-duration:34s;animation-delay:-14s}
+    .l3{top:76%;left:-22px;animation-duration:30s;animation-delay:-20s}
+    @keyframes drift{from{transform:translateX(0) rotate(0)}to{transform:translateX(calc(100vw + 320px)) rotate(18deg)}}
+    .wrap{width:100%;max-width:430px;position:relative;z-index:1;animation:rise .8s ease both}
+    @keyframes rise{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .hero{text-align:center;margin-bottom:14px;color:#3b4a41;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+    .hero .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;margin-bottom:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.28);
+      border:1px solid rgba(255,255,255,.48);
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 24px rgba(92,108,83,.10);
+      font-size:13px;font-weight:600;
+      animation:float 4s ease-in-out infinite;
+    }
+    @keyframes float{50%{transform:translateY(-4px)}}
+    .hero h1{font-size:clamp(24px,6vw,34px);margin-bottom:6px;letter-spacing:-.02em}
+    .hero p{font-size:14px;color:var(--muted)}
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.18));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      padding:22px 18px 18px;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";position:absolute;inset:-35% -18% auto auto;width:170px;height:170px;
+      background:radial-gradient(circle, rgba(255,255,255,.48), rgba(255,255,255,0) 70%);
+      pointer-events:none;
+    }
+    .card h2{font-size:20px;text-align:center;margin-bottom:18px;color:#4c5d4f}
+    .field{position:relative;margin-bottom:14px}
+    .field i.left{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#7d8c7d;font-size:16px}
+    .field input{
+      width:100%;border:none;outline:none;
+      padding:15px 44px 15px 44px;border-radius:16px;
+      background:rgba(255,255,255,.82);color:var(--text);font-size:16px;
+      box-shadow:inset 0 0 0 1px rgba(120,135,117,.14);
+      transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .field input::placeholder{color:#87968a}
+    .field input:focus{background:#fff;box-shadow:0 0 0 4px rgba(142,155,106,.14), inset 0 0 0 1px rgba(142,155,106,.22);transform:translateY(-1px)}
+    .toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;border-radius:12px;background:transparent;color:#718170;cursor:pointer;font-size:16px}
+    .toggle:active,.btn:active{transform:translateY(1px) scale(.99)}
+    .btn{
+      width:100%;border:none;cursor:pointer;margin-top:6px;padding:15px 16px;
+      border-radius:16px;color:#fff;font-size:16px;font-weight:700;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      box-shadow:0 12px 28px rgba(126,140,97,.24);
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+    }
+    .btn:hover{transform:translateY(-2px);filter:saturate(1.04);box-shadow:0 16px 34px rgba(126,140,97,.30)}
+    #message{min-height:24px;margin-top:14px;text-align:center;font-size:14px;font-weight:700;opacity:.98}
+    .footer{margin-top:12px;text-align:center;font-size:12px;color:rgba(54,69,59,.65)}
+    @media (max-width:480px){body{padding:14px}.wrap{max-width:100%}.card{padding:20px 14px 16px;border-radius:24px}.hero{margin-bottom:10px}.hero p{font-size:13px}.field input{font-size:15px;padding:14px 42px 14px 42px}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="sky">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+    <div class="leaf l1"></div>
+    <div class="leaf l2"></div>
+    <div class="leaf l3"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="badge"><i class="fa-solid fa-seedling"></i> Secure Access</div>
+      <h1><i class="fa-solid fa-graduation-cap"></i> Student Login Portal</h1>
+      <p>Secure student login for a smooth experience.</p>
+    </div>
+
+    <div class="card">
+      <h2>Student Login</h2>
+
+      <div class="field">
+        <i class="fa-solid fa-user left"></i>
+        <input type="text" id="username" placeholder="Username" autocomplete="username" />
+      </div>
+
+      <div class="field">
+        <i class="fa-solid fa-lock left"></i>
+        <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+        <button type="button" class="toggle" onclick="togglePassword()" aria-label="Show or hide password">
+          <i class="fa-solid fa-eye" id="eyeIcon"></i>
+        </button>
+      </div>
+
+      <button class="btn" onclick="login()"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
+      <p id="message"></p>
+      <div class="footer">Tip: Tap the eye icon to show or hide your password.</div>
+    </div>
+  </div>
+
+  <script>
+    var users = [
+      { username: "racheil", password: "2004" },
+      { username: "student1", password: "1111" },
+      { username: "student2", password: "2222" }
+    ];
+    var attempts = 0;
+    var maxAttempts = 3;
+
+    function togglePassword() {
+      var pass = document.getElementById('password');
+      var eye = document.getElementById('eyeIcon');
+      if (pass.type === 'password') { pass.type = 'text'; eye.className = 'fa-solid fa-eye-slash'; }
+      else { pass.type = 'password'; eye.className = 'fa-solid fa-eye'; }
+    }
+
+    function login() {
+      var user = document.getElementById('username').value.trim();
+      var pass = document.getElementById('password').value;
+      var msg = document.getElementById('message');
+
+      if (attempts >= maxAttempts) {
+        msg.innerHTML = 'Account locked. Please try again later.';
+        msg.style.color = '#8a3b2d';
+        return;
+      }
+
+      var found = users.find(u => u.username === user && u.password === pass);
+      if (found) {
+        msg.innerHTML = 'Welcome, ' + user + '!';
+        msg.style.color = '#4b7a45';
+        attempts = 0;
+      } else {
+        attempts++;
+        if (attempts >= maxAttempts) {
+          msg.innerHTML = 'Account locked. Too many attempts.';
+          msg.style.color = '#8a3b2d';
+        } else {
+          msg.innerHTML = 'Invalid username or password. Attempts left: ' + (maxAttempts - attempts);
+          msg.style.color = '#8a3b2d';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
